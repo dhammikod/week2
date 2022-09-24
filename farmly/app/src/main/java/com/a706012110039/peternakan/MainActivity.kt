@@ -40,11 +40,6 @@ class MainActivity : AppCompatActivity(),cardlistener {
                 if(globalvar.listDatahewan[i] is ayam){
                     globalvar.tempDatahewan.add(globalvar.listDatahewan[i])
                 }
-                if(globalvar.tempDatahewan.size>0){
-                    viewbind.textView2.alpha = 0f
-                }else{
-                    viewbind.textView2.alpha = 1f
-                }
             }
             viewbind.listdata.adapter = adapter2
             adapter.notifyDataSetChanged()
@@ -54,11 +49,6 @@ class MainActivity : AppCompatActivity(),cardlistener {
                 if(globalvar.listDatahewan[i] is sapi){
                     globalvar.tempDatahewan.add(globalvar.listDatahewan[i])
                 }
-                if(globalvar.tempDatahewan.size>0){
-                    viewbind.textView2.alpha = 0f
-                }else{
-                    viewbind.textView2.alpha = 1f
-                }
             }
             viewbind.listdata.adapter = adapter2
             adapter.notifyDataSetChanged()
@@ -67,11 +57,6 @@ class MainActivity : AppCompatActivity(),cardlistener {
             for(i in 0..globalvar.listDatahewan.size-1){
                 if(globalvar.listDatahewan[i] is kambing){
                     globalvar.tempDatahewan.add(globalvar.listDatahewan[i])
-                }
-                if(globalvar.tempDatahewan.size>0){
-                    viewbind.textView2.alpha = 0f
-                }else{
-                    viewbind.textView2.alpha = 1f
                 }
             }
             viewbind.listdata.adapter = adapter2
@@ -165,7 +150,13 @@ class MainActivity : AppCompatActivity(),cardlistener {
                 snackbar.show()
 
                 //remove
-                globalvar.listDatahewan.removeAt(position)
+                for(i in 0..globalvar.listDatahewan.size-1){
+                    if(globalvar.listDatahewan[i].id == position){
+                        globalvar.listDatahewan.removeAt(i)
+                        break
+                    }
+                }
+
                 if(globalvar.session == "ayam"){
                     globalvar.tempDatahewan.clear()
                     for(i in 0..globalvar.listDatahewan.size-1){
@@ -222,14 +213,24 @@ class MainActivity : AppCompatActivity(),cardlistener {
             val intent = Intent(this, AddActivity::class.java).putExtra("position",position)
             startActivity(intent)
         }else if(tombol == "feed"){
-            if(globalvar.listDatahewan[position] is ayam){
-                Toast.makeText(this, globalvar.listDatahewan[position].makanan(biji()), Toast.LENGTH_SHORT).show()
-            }else{
-                Toast.makeText(this, globalvar.listDatahewan[position].makanan<Int>(rumput()), Toast.LENGTH_SHORT).show()
+            for(i in 0..globalvar.listDatahewan.size-1){
+                if(globalvar.listDatahewan[i].id == position){
+                    if(globalvar.listDatahewan[i] is ayam){
+                        Toast.makeText(this, globalvar.listDatahewan[i].makanan(biji()), Toast.LENGTH_SHORT).show()
+                    }else{
+                        Toast.makeText(this, globalvar.listDatahewan[i].makanan<Int>(rumput()), Toast.LENGTH_SHORT).show()
+                    }
+                    break
+                }
             }
         }else{
             //interact
-            Toast.makeText(this,  globalvar.listDatahewan[position].interaksi(), Toast.LENGTH_SHORT).show()
+            for(i in 0..globalvar.listDatahewan.size-1){
+                if(globalvar.listDatahewan[i].id == position){
+                    Toast.makeText(this,  globalvar.listDatahewan[i].interaksi(), Toast.LENGTH_SHORT).show()
+                    break
+                }
+            }
         }
 
     }

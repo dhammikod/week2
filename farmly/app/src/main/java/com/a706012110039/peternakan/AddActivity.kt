@@ -21,6 +21,7 @@ class AddActivity : AppCompatActivity() {
     var position = -1
     var image: String = ""
     var jenis: String = "no"
+    var id: Int = 0
 
     private val GetResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
         if (it.resultCode == RESULT_OK){   // APLIKASI GALLERY SUKSES MENDAPATKAN IMAGE
@@ -43,19 +44,25 @@ class AddActivity : AppCompatActivity() {
         supportActionBar?.hide()
         getintent()
         listener()
+
     }
     //tes update
 
     private fun getintent(){
         position = intent.getIntExtra("position", -1)
         if(position != -1){
-            val hewan = globalvar.listDatahewan[position]
+            var hewan = globalvar.listDatahewan[0]
+            for(i in 0..globalvar.listDatahewan.size-1){
+                if(position == globalvar.listDatahewan[i].id){
+                    hewan = globalvar.listDatahewan[i]
+                }
+            }
             viewbind.toolbar2.title = "Edit animal"
             viewbind.Addanimal.text = "Edit Animal"
-            viewbind.imageView2.setImageURI(Uri.parse(globalvar.listDatahewan[position].imageuri))
+            viewbind.imageView2.setImageURI(Uri.parse(hewan.imageuri))
             viewbind.usiahewan.editText?.setText(hewan.usiahewan.toString())
             viewbind.namahewan.editText?.setText(hewan.namahewan)
-            image = globalvar.listDatahewan[position].imageuri
+            image = hewan.imageuri
             if(hewan is kambing){
                 viewbind.Kambing.isChecked = true
             }else if(hewan is ayam){
@@ -95,7 +102,9 @@ class AddActivity : AppCompatActivity() {
             var nama = viewbind.namahewan.editText?.text.toString().trim()
             var usia = 0
 
-            hewan = hewan(nama,jenis,usia,image)
+
+
+            hewan = hewan(nama,jenis,usia,image, id)
             hewan.jenishewan = jenis
 
             checker()
@@ -135,16 +144,19 @@ class AddActivity : AppCompatActivity() {
             var speshewan: hewan
             if(position == -1)
             {
+                if(globalvar.listDatahewan.size > 0){
+                    id = globalvar.listDatahewan[globalvar.listDatahewan.size-1].id + 1
+                }
                 hewan.usiahewan = viewbind.usiahewan.editText?.text.toString().toInt()
                 if(jenis == "sapi"){
-                    speshewan = sapi(hewan.namahewan,hewan.jenishewan,hewan.usiahewan,hewan.imageuri)
+                    speshewan = sapi(hewan.namahewan,hewan.jenishewan,hewan.usiahewan,hewan.imageuri, id)
                     speshewan.jenishewan = "sapi"
                 }else if(jenis == "ayam")
                 {
-                    speshewan = ayam(hewan.namahewan,hewan.jenishewan,hewan.usiahewan,hewan.imageuri)
+                    speshewan = ayam(hewan.namahewan,hewan.jenishewan,hewan.usiahewan,hewan.imageuri, id)
                     speshewan.jenishewan = "ayam"
                 }else{
-                    speshewan = kambing(hewan.namahewan,hewan.jenishewan,hewan.usiahewan,hewan.imageuri)
+                    speshewan = kambing(hewan.namahewan,hewan.jenishewan,hewan.usiahewan,hewan.imageuri, id)
                     speshewan.jenishewan = "kambing"
                 }
                 globalvar.listDatahewan.add(speshewan)
@@ -152,19 +164,27 @@ class AddActivity : AppCompatActivity() {
             }
             else
             {
+                id = position
                 hewan.usiahewan = viewbind.usiahewan.editText?.text.toString().toInt()
                 if(jenis == "sapi"){
-                    speshewan = sapi(hewan.namahewan,hewan.jenishewan,hewan.usiahewan,hewan.imageuri)
+                    speshewan = sapi(hewan.namahewan,hewan.jenishewan,hewan.usiahewan,hewan.imageuri, id)
                     speshewan.jenishewan = "sapi"
                 }else if(jenis == "ayam")
                 {
-                    speshewan = ayam(hewan.namahewan,hewan.jenishewan,hewan.usiahewan,hewan.imageuri)
+                    speshewan = ayam(hewan.namahewan,hewan.jenishewan,hewan.usiahewan,hewan.imageuri,id)
                     speshewan.jenishewan = "ayam"
                 }else{
-                    speshewan = kambing(hewan.namahewan,hewan.jenishewan,hewan.usiahewan,hewan.imageuri)
+                    speshewan = kambing(hewan.namahewan,hewan.jenishewan,hewan.usiahewan,hewan.imageuri,id)
                     speshewan.jenishewan = "kambing"
                 }
-                globalvar.listDatahewan[position] = speshewan
+
+                for(i in 0..globalvar.listDatahewan.size-1){
+                    if(globalvar.listDatahewan[i].id == position){
+                        globalvar.listDatahewan[i] = speshewan
+                        break
+                    }
+                }
+
             }
             finish()
         }

@@ -20,7 +20,7 @@ class rvadapter(val listhewan: ArrayList<hewan>, val cardlistener: cardlistener)
         val binding = HewanbannerBinding.bind(itemView)
 
         fun setData(data: hewan) {
-            binding.Namahewan.text = data.namahewan
+            binding.Namahewan.text = data.id.toString()
             binding.jenishewan.text = data.jenishewan
             binding.usiahewan.text = data.usiahewan.toString()
             if (data.imageuri!!.isNotEmpty()) {
@@ -28,18 +28,18 @@ class rvadapter(val listhewan: ArrayList<hewan>, val cardlistener: cardlistener)
             }
 
             binding.delete.setOnClickListener {
-                cardlistener.onCardClick("delete", position)
+                cardlistener.onCardClick("delete", data.id)
             }
             binding.edit.setOnClickListener {
-                cardlistener.onCardClick("edit", position)
+                cardlistener.onCardClick("edit", data.id)
             }
 
             binding.interact.setOnClickListener{
-                cardlistener.onCardClick("interact", position)
+                cardlistener.onCardClick("interact", data.id)
             }
 
             binding.feed.setOnClickListener{
-                cardlistener.onCardClick("feed", position)
+                cardlistener.onCardClick("feed", data.id)
             }
         }
     }
