@@ -20,7 +20,7 @@ class rvadapter(val listhewan: ArrayList<hewan>, val cardlistener: cardlistener)
         val binding = HewanbannerBinding.bind(itemView)
 
         fun setData(data: hewan) {
-            binding.Namahewan.text = data.id.toString()
+            binding.Namahewan.text = data.namahewan
             binding.jenishewan.text = data.jenishewan
             binding.usiahewan.text = data.usiahewan.toString()
             if (data.imageuri!!.isNotEmpty()) {

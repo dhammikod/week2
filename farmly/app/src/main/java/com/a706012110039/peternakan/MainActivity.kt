@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity(),cardlistener {
     private lateinit var viewbind: ActivityMainBinding
     private val adapter = rvadapter(globalvar.listDatahewan, this)
     private val adapter2 = rvadapter(globalvar.tempDatahewan, this)
+    var jenis : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         supportActionBar?.hide()
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity(),cardlistener {
                 }
             }
             viewbind.listdata.adapter = adapter2
+
             adapter.notifyDataSetChanged()
         }else if(globalvar.session == "kambing"){
             globalvar.tempDatahewan.clear()
